@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>About The Planetarium</title>
+
+    <link rel="stylesheet" href="css/text.css">
+    <!--<script src="http://10.0.0.5:8888/target/target-script-min.js"></script>-->
+  </head>
+
+  <body>
+    <div id="desktop" style="display:none" >
+
+      <div class="header">
+
+        <div class="topleft">
+          &nbsp;
+        </div>
+
+        <div class="topright">
+          <a href="../../index.html">Top</a><br>
+          2-D<br>
+          <a href="../index.html">3-D</a><br>
+          <a href="heliocentric.html">Enter the Planetarium</a>
+        </div>
+
+        <div class="topcenter">
+          <img src="images/dogtooth-55-50.png">
+        </div>
+
+      </div>
+
+    <h1>The Dogulean Planetarium</h1>
+
+    <h2>Quick Start</h2>
+
+      <p>
+        By all means just <a href="heliocentric.html">Enter the
+          Planetarium</a> and try things out.  But note:
+        <ul>
+          <li>
+            You can change the direction of view by holding the left
+            mouse button down and dragging the mouse.  With a
+            touchpad press with one finger and drag.
+          </li>
+          <li>
+            You can change the scale of the display (zoom or unzoom)
+            by turning the mouse wheel or by holding down the mouse
+            and moving the mouse up or down.  With touchpad,
+            get this effect by dragging two fingers vertically,
+            without pressing.  With a Mac OS X-type mouse (MS now has
+            similar mice) stroke two fingers on the mouse. 
+          <li>
+            Right-clicking anywhere will bring up a control panel.
+            Right-clicking again or clicking "Dismiss" will dismiss
+            it.  With a touchpad, press with two fingers, or possibly
+            press on the lower right corner of the touchpad.
+          </li>
+          <li>
+            You can drag the control panel by its top line.
+          </li>
+		  <li>
+			<i>NEW!</i> You can choose what planet you are on,
+			including the Sun.  If the planet is not the Earth or the
+			Moon, then the main thrill of this is to see your planet
+			against the stars.  For that, there is an altitude setting
+			(altitude as a multiple of planet radius).  You want to
+			look down (set View/Elevation to -89) and then ramp the
+			altitude up (under "Viewer Location").  Another thrill is
+			to go to an outer planet, blow up planet size, and look at
+			the inner planets clustered around the Sun.  Lines of
+			latitude and longitude and the ecliptic will be drawn
+			appropriately for the planet you are on and the planet will
+			rotate at about the right speed.
+		  </li>
+          <li>
+            Besides the obvious sliders, select boxes, etc., anything
+            that changes color when you mouse-over it can be clicked on
+            with some effect or other.
+          </li>
+          <li>
+            If you put the mouse on any heavenly body a "tooltip" should
+            appear, telling you what it is and its position.
+          </li>
+          <li>
+            Clicking the left mouse button (without dragging) cycles through constellation,
+            star, and planet labels.
+            <ul>
+              <li>No labels.</li>
+              <li>Planet names, constellation names, names of well-known
+                stars, letters of fairly bright stars.</li>
+              <li>Constellation names, designations for stars, but no
+                planet names.  <i>All</i> stars will have labels in
+                this mode, but things will be rather cluttered and not
+                all labels will appear until you zoom in. </li>
+            </ul>
+			With a touchpad, this would be just a touch or possibly a click.
+		  </li>
+        </ul>
+
+	<h2>Source Code</h2>
+
+	See our github
+	<a href="https://github.com/hooverdn/planetarium" target="_blank">planetarium repository</a>.
+	
+    <h2>The Planetarium On Laptop or Desktop</h2>
+    
+    <h3>Requirements and Recommendations</h3>
+
+    <ul>
+      <li>
+        You need a browser that supports HTML5 and WebGL,so the
+        system needs to support OpenGL.  A reasonably recent
+        middle-of-the-line graphics processor should do.
+      </li>
+      <li>
+        Chrome, Opera, Firefox, and
+        IE 11 are all ok on Windows or Linux.  Chrome and Opera are
+        best and perform about the same.  
+      </li>
+      <li>
+        I haven't tried the Planetarium on Apple OS X.  Chrome, Opera,
+        and Safari should all perform about the same.
+      </li>
+      <li>
+        A reasonably high-definition monitor should suffice, but
+        higher definition is better.  A big UHD TV is excellent!
+      </li>
+    </ul>
+
+    <h3>Controls and Settings in Detail</h3>
+
+    All settings are saved, so if you reload the page, or close it and
+    then revisit it some time later, it will be in the same state.
+    
+    <h4>Viewer Location</h4>
+    By default, the Planetarium will try to use the HTML5 geolocate
+    function to set your latitude and longitude.  If you want to be in
+    some other place, any map web site will tell you its coordinates
+    and you can enter them manually.
+
+    <h4>View</h4>
+
+    <p>
+      <b>Elevation</b> (altitude) and <b>Rotation</b> (azimuth)
+      determine the direction of view.  Dragging the mouse has the
+      same effect&mdash;a drag changes elevation by an angle
+      determined by the vertical part of the drag, rotation by the
+      horizontal part.
+    </p>
+    <p>
+      <b>Zoom</b> magnifies everything and thereby reduces the field of
+      view, like using a telescope.
+    </p>
+    <p>
+      <b>Lines</b>, when <b>ON</b> displays reference lines of right ascension
+      and declination, as well as the ecliptic.
+      <ul>
+        <li>
+          Lines of right ascension are spaced 15 degrees (one hour) apart,
+          lines of declination 10 degrees apart.  The lines are not
+          labeled, but you can mouse-over a nearby object to find
+          what a line represents.
+        </li>
+        <li>
+          The equator and 0&deg; and 180&deg; meridians are in
+          gold, the ecliptic in magenta.
+        </li>
+        <li>
+          The reason that the lines of right ascension, the equator,
+          and the ecliptic appear as straight lines is that they are
+          all great circles.  Lines of declination other than the
+          equator look curved because they are not great circles.
+        </li>
+      </ul>
+    </p>
+
+    
+    <h4>Time</h4>
+
+    <p>
+      <b>Time Currently Set</b> shows the current date and time of the
+      app in format YYYY-MM-DD hh:mm:ss.sss.
+    <p>
+     If <b>Use Real Time</b> is enabled and you click it, the app will
+      start using the time your computer's current time as its
+      internal time will be set to your computer's current time in
+      GMT/UTC and the time rate will be set to 1.  If you are already
+      on real time, this line will be disabled.
+    </p>
+    <p>
+      The clock <b>Rate</b> can be set to any number from -60 (clock
+      runs one minute per real second backwards) to 60 (one minute per
+      real second forward).
+      <ul>
+        <li> The "1" button will set the rate to 1 ("normal" passage
+        of time) and the "0" button will set the rate to 0, stopping
+          the clock.
+      </ul>
+    </p>
+    <p>
+      Real time is the default.
+    </p>
+
+    <h4>Stars</h4>
+    <p>
+      We model stars as disks, placed far away in the "sphere of fixed stars".
+    <p>
+      For the Planetarium, current technology has two shortcomings:
+      <ul>
+        <li>
+          Monitor resolution is far lower than that of the sky.
+        </li>
+        <li>
+          Pixels have a maximum brightness that is not very high at all.
+        </li>
+      </ul>
+      We try to compensate for these shortcomings by providing size
+      and brightness settings for you to use according to taste.  At
+      present, I don't have any scientific basis for recommending
+      particular settings.
+    </p>
+
+    <p>
+      <b>Base Radius</b>.  If "Brightness Boost" is 1, a white magnitude
+      0 star will be represented by a disk of radius 1 and color
+      rgb(1.0, 1.0, 1.0) (equivalently 0xFFFFFF).  Stars that are
+      brighter will have a bigger radius so the amount of light emitted on
+      screen is equivalently bigger than that of the maginitude 0 star.
+    </p>
+    <p>
+      Stars that are dimmer than magnitude 0 will just be dimmer.
+      Stars that are not white will have their size or brightness
+      boosted by a factor of 3*max(r, g, b)/(r + g + b).
+    </p>
+    <p>
+      <b>Brightness Boost</b> is a number by which to multiply the
+      brightness of stars before computing the radius and
+      RGB components to use for it.
+    </p>
+
+    <p>
+      We derive a color for each star from the B &ndash; V value given
+      for it in the star catalog we use.  The <b>Color level</b> value
+      determines how intense this color will be.  A level of 0 means
+      all stars are white.  At level 10, colors are very striking.  In
+      between, reds and yellows are noticeable but blues tend to just
+      look a bit dim.
+    </p>
+    
+    <h4>Planets</h4>
+
+    <p>
+      We model planets as spheres orbiting the Sun.  Their diameters
+      are scaled from their actual diameters and the orbital positions
+      are computed using their Keplerian orbital elements.  Their light
+      is the Sun's light reflecting off them.
+    </p>
+    <p>
+      Sun and Moon are treated as planets, but differently from the
+      others because they appear much larger in the sky and because
+      the Sun shines.  The Earth is a planet, too, but a rather
+      different one because we are on it and have to take account of
+      its inclination and rotation.
+    </p>
+
+    <p>
+      <b>Planet Magnification</b> multiplies the apparent size of
+      planets other than the current home planet, the Sun, possibly
+      the Moon or Earth&mdash;see Sun/Moon/Earth Magnification below.
+      You won't see much without magnifying the planets and you won't
+      see Uranus and Neptune at all unless you turn magnification way
+      up.  Moderate magnifications will also let you make out the
+      phases of Venus and Mercury.
+    </p>
+    <p>
+      <b>Planet Color</b> has four options: Green, Blue, White, and Natural.  These
+      do not apply to Sun, Moon, or Earth, which always have a natural
+      color.
+      <ul>
+        <li>
+          <b>Green</b>.  There are no green stars, so this makes the
+          planets easy to pick out.
+        </li>
+        <li>
+          <b>Blue</b> makes the planets light blue.  If you are
+          red-green color-blind, try setting the Color Level for stars
+          to 0 and using this option.
+        </li>
+        <li>
+          <b>White</b>, the  brightest.
+        </li>
+        <li>
+          <b>Natural</b>.  Except for the Sun and Venus, for which I
+          do not have a good Mercator projection image, "natural" now
+		  represents each planet using an image of it.
+        </li>
+      </ul>
+    </p>
+    <p>
+      <b>Sun/Moon/Earth Magnification</b>.  At their real size Sun and
+      Moon look too small&mdash;although they look big in the sky,
+      but each subtends only half a degree.  The default magnification
+      of 5 seems about right for normal use.  If Mercury is near the
+      Sun but in front of it, turning up the Sun/Moon magnification may help
+      find Mercury as a small speck on the Sun.  If the current home
+      planet is the Earth, then this setting affects the size of Sun
+      and Moon.  If the home planet is the Moon, then it affects the
+      size of Sun and Earth.  If the home planet is the Sun, it
+      doesn't affect anything.  Otherwise it affects only the Sun.
+    </p>
+    <p>
+      <b>Sun Brightness</b>.  How to set the brightness of the Sun is
+      art rather than science.  A level of 5 or 10 seems reasonable.
+      This will make the Moon and planets brighter, but only to a
+      certain degree, since the maximum value of 1.0 for each RGB
+      component still applies to them.
+    </p>
+
+    <h2>The Planetarium On a Mobile Device</h2>
+
+    The point of using the Planetarium on a mobile device is that you
+    can take it outside to and see what stars there are.
+
+    <h3>The Basics</h3>
+
+    <p>Platforms: A moderately recent, middle-of-the-line or better
+        smartphone or tablet should do.
+    <p>Browser:
+	  <ul>
+		<li>On Android, use Chrome or Opera.  Opera seems best.
+		  Firefox is too slow.
+		<li>On iOS, Safari, Chrome, Firefox, and Opera all seem to be
+		  different skins on the same thing, so they are all equally
+		  good.
+	  </ul>
+    <p>When you open the Planetarium, a Mobile Setup menu will
+      appear.
+    <p>You can get this menu at any time by touching the "Setup"
+      button on the planetarium screen.
+    <p>Dismiss the setup menu by touching "Done Setup".
+
+    <h3>Key items on the Menu</h3>
+    <ol>
+      <li>
+        Your location.  Touch "Set Location From GPS" whenever you use
+        the Planetarium far enough from your last location that it
+        matters.  If it doesn't work, set it manually, if you know
+        your approximate latitude and longitude.
+		<br>You need to set at least an approximate location 
+		in order to see the sky as it is where you are.
+	  </li>
+	  <li>
+		If your phone has a gyroscope, under "Navigation" you will
+		have a choice about whether to use the automatic orientation
+		of your phone by the gyroscope ("Just point your device") or
+		not ("Drag one finger &hellip;").  If you have the choice,
+		normally you will want to choose "Just point &hellip;".
+	  </li>
+      <li>
+        If your phone supports device orientation control (has a
+        gyroscope), the view will show the part of the sky above the
+        point where the end of your phone is pointing, <i>if</i> the
+        Planetarium knows which way north is.
+        <ul>
+          <li>
+            If your phone has a compass, the Planetarium will
+            automatically find the direction it is pointing from that
+            when the Planetarium opens.  If you think that the
+            Planetarium's direction seems off, you may want to re-set
+            it.  Stay away from any electrical or magnetic fields
+            (such as TVs or monitors) or from masses of magnetic metal
+            when using the compass.
+          </li>
+          <li>
+            If your phone doesn't have a compass (e.g. if it is an
+            iPod touch) or if it is too much trouble getting the
+            compass to work properly, point the end of your phone
+            north (e.g. toward the north star) and press "Set True
+            North".
+          </li>
+        </ul>
+      </li>
+      <li>
+        On Android, when you leave this menu, the page will request to
+        go full screen, so (hopefully) you won't see the address bar
+        while looking at the stars.  Quite a lot of things will bump
+        you out of full screen, but if you want to you can get it back
+        by returning to this menu and dismissing it.
+      </li>
+	  <li>
+		To learn the angle at which you need to hold the phone, try getting something
+        familiar, like the Sun, on the screen.
+    </ol>
+    The other items on the menu are the ones available on the
+    desktop.  You probably don't want to fiddle a lot with the menu on
+    a small screen, but if you are familiar with the menu, you might
+    want to use it now and then.
+
+    <p><b>Note:</b>  On iOS, sliders and data entry boxes on submenus
+    of the settings menu are very small, but
+    the system enlarges them if you touch them.
+
+    <h3>Labeling Stars</h3>
+    The Planetarium can show three levels of star labels.
+    Touch the screen to change levels.
+    <ol>
+      <li>
+        Level 0 (default on desktop): no labels.
+      </li>
+      <li>
+        Level 1 (the default on mobile devices): Names of well-known
+        stars, letters for fairly bright stars.  You should be able to
+        make out the shapes of constellations.
+      </li>
+      <li>
+        Level 2: Constellation names, designators for all
+                stars, but no planet names.  Things will be rather
+                cluttered and not all labels will appear until you
+                zoom in.  In particular, for stars that have no
+                designation but their bright star number, the number
+                will not appear until zoom is at least 1.8.
+
+      </li>
+    </ol>
+
+
+    <h2>Issues and Limitations</h2>
+
+    <ul>
+      <li>
+        Objects are distorted (stretched), especially near the edges of the
+        screen.  This is due to the nature of the projection of the model onto
+        the screen,
+      </li>
+      <li>
+        So far, Messier objects (nebulae) are not represented.
+      </li>
+      <li>
+        Refraction effects near the horizon are not modeled.
+      </li>
+      <li>
+        Oblateness is modeled as far as viewing them goes, but does
+        not affect camera direction as it should.
+      </li>
+    </ul>
+    
+    <h2>Methods and Background</h2>
+
+    <h3>A Planetarium or Star Map Implemented in WebGL and three.js</h3>
+
+    <p>
+    The idea of implementing a planetarium using a 3-D graphics system
+    is an obvious one.  We do it this way:
+    <ul>
+      <li>Put the "fixed" stars far away at positions given in a star catalog.</li>
+      <li>Put the Sun in the middle.</li>
+      <li>Compute the heliocentric positions of the planets and the
+        geocentric position of our Moon.</li>
+      <li>Put a "camera" at the observer's location on Earth and let
+        the observer point it in the desired direction.</li>
+      <li>Let the 3-D system do the rest.</li>
+    </ul>
+    The model must be much the same as Kepler's model of the solar
+    system, and the method of computing the positions of the planets
+    is just a modernization of his in which the parameters change with
+    time.
+    </p>
+    <p>
+      With WebGL, this can be done on a web page that anybody can access;
+      and, with the three.js library, the 3-D part of the programming is relatively
+      easy.
+    </p>
+    <p>
+      Using this application is supposed to be like looking at the night
+      sky&ndash;even when it is daytime in the app. 
+    </p>
+
+    <h3>Stars</h3>
+
+    <p>
+      Most star data comes from the 2017 US Naval Observatory
+      <a href="http://asa.usno.navy.mil/SecH/BrightStars.html" target="_blank">Table of Bright Stars</a>.
+    </p>
+    <p>
+      We convert star magnitudes to brightness according to the
+      formula in the
+      Wikipedia <a href="https://en.wikipedia.org/wiki/Magnitude_(astronomy)"
+      target="_blank">Magnitude</a>
+      article.  Converting the brightness number to screen values is a
+      matter of judgement which depends on the value chosen for a
+      reference brightness.
+    </p>
+    <p>
+      Star colors are derived from the <i>B &ndash; V</i>&thinsp; color index of
+      the star using a rough method derived from the table in a
+      Cornell <a href="http://curious.astro.cornell.edu/physics/78-the-universe/stars-and-star-clusters/general-questions/372-how-does-the-color-index-of-a-star-relate-to-its-actual-color-intermediate"
+      target="_blank">Ask
+      an Astronomer</a> answer.  I would be happy to know a better
+      way of doing it.  The Bright Stars Table also contains the <i>V &#45; I</i>&thinsp;
+      color index, so we could use a method that relies on both.
+    </p>
+    <p>
+      Most common names of stars come from the
+      Wikipedia <a href="https://en.wikipedia.org/wiki/List_of_proper_names_of_stars"
+      target="_blank">Proper
+        Names of Stars</a> article.
+    <p>
+    
+    <h3>Planets</h3>
+
+    <p>
+      For planets other than the Sun (which is at the origin) and Moon,
+      positions are computed from their Keplerian elements as given
+      in <a href="https://ssd.jpl.nasa.gov/txt/aprx_pos_planets.pdf" target="_blank">Keplerian
+        Elements for Approximate Positions of the Major Planets</a> by
+      E. M. Standish.  Thanks to the miracle of the WebGL graphics
+      engine, we only need to compute the heliocentric positions of
+      the planets.  The WebGL engine does the work of converting those
+      to positions in the sky relative to the observer.
+    </p>
+    <p>
+      The main reason for computing planet positions instead of
+      getting them from ephemerides is that we want positions in
+      space rather than in the Earth's sky.  A second is to avoid
+      dependencies on other sites.
+    </p>
+    <p>
+      Although we do compute the right ascension and declination of
+      planets to display in their tooltip description, we actually set
+      their position in the solar system using their
+      heliocentric ecliptic coordinates and then tilt the solar system
+      by the J2000 obliquity of the Earth and then tilt the Earth back
+      so that its north pole points to the celestial north pole.
+    </p>
+    <p>
+      The orbit Moon around the Earth is much more difficult to compute,
+      because the Moon is subject to gravitational pull of both Earth
+      and Sun, to the influence of the tides, and to much else.  I have
+      borrowed Javascript code to do this from
+      Martin V&eacute;zina's <a href="https://github.com/mgvez/planet-positions" target="_blank">Planet
+        Positions</a> project, which was itself translated from Matlab
+      code by David Eagle, based in turn on programs in <i>Lunar Tables
+        and Programs From 4000 B.C. TO A.D. 8000</i>&thinsp; by Michelle
+      Chapront-Touz&eacute; and Jean Chapront.
+    </p>
+    <p>
+      Data on radii, oblateness, and rotation rates of planets are taken
+      from <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/" target="_blank">NASA
+        planetary fact sheets</a>.
+    </p>
+	<p>
+	  Planet textures come from various sources.
+	  <ul>
+		<li>
+		  Mercury, Mars, Jupiter, Saturn and its rings, Uranus and its
+		  rings, and Neptune from
+		  <a href="http://planetpixelemporium.com"
+			 target="_blank">JHT's Planetary Pixel Emporium</a>.
+		</li>
+		<li>
+		  The Moon image we are using doesn't seem to be online
+		  anymore, so I am not sure where it came from. 
+		</li>
+		<li>
+		  The Earth image is the familiar
+		  <a href="https://visibleearth.nasa.gov/view.php?id=57735"
+			 target="_blank">Blue Marble</a> from
+		  <a href="https://visibleearth.nasa.gov" target="_blank">NASA
+			Visible Earth</a>.
+		</li>
+	  </ul>
+	</p>
+	<p>
+	  I have used the <a href="http://www.numericjs.com" target="_blank"><code>numeric.js</code></a> javascript library to determine star
+	  and planet label positions.
+	</p>	
+    <!--
+    <p>
+      The diagram of the <a href="images/MilkyWayRev.png"
+      target="_blank">Milky Way</a> is adapted from a
+      <a href="https://commons.wikimedia.org/wiki/File:MessierStarChart.svg"
+      target="_blank">Messier objects chart</a> by Jim Cornmell,
+      licensed under the
+      <a href="https://en.wikipedia.org/wiki/Creative_Commons"
+      target="_blank">Creative Commons</a>
+      <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en"
+      target="_blank">Attribution-Share Alike 3.0
+      Unported</a> license, so that file is subject to the same license.
+      -->
+    </div>
+    <div id="mobile" style="display:none;">
+      <div class="header">
+        <div class="topleft">
+          &nbsp;
+        </div>
+        <div class="topright">
+          <a href="../../index.html">Top</a><br>
+          2-D<br>
+          <a href="../index.html">3-D</a><br>
+          <a href="heliocentric-mobile.html">Enter the Planetarium</a>
+        </div>
+        <div class="topcenter">
+          <img src="images/dogtooth-55-50.png">
+        </div>
+      </div>
+      <div>
+        <h1>On a Mobile Device</h1>
+
+        The point of using the Planetarium on a mobile device is that you
+        can take it outside to see what the stars are.
+        <p>After the planetarium page loads, an internet
+          connection is not necessary.
+          <ol>
+            <li>
+              Platforms: I have tried Android and iOS.  Android is better
+              for the Planetarium.
+            </li>
+            <li>
+              Browser: <br>
+			  On Android, Opera is best.  Chrome is ok but
+              the view may slosh around a lot when you turn the
+              phone.  Mobile Firefox seems too slow.<br>
+			  On iOS, Opera, Chrome, and Firefox all seem to be
+			  different skins on Safari, i.e. all are equally good.
+            </li>
+            <li>
+              When you open the Planetarium, a Mobile Setup menu will
+              appear.
+            </li>
+            <li>
+              You can get this menu at any time by touching the
+              "Setup" button.
+            </li>
+            <li>
+              Dismiss the setup menu by touching "Done Setup".
+            </li>
+          </ol>
+          <h3>Key items on the Menu</h3>
+          <ol>
+            <li>
+              Your location.  Touch "Set Location From GPS" whenever you
+              use the Planetarium far enough from your last location that it
+              matters.  This should work on all current mobile phones, but
+              not on an iPod Touch.  If
+              it doesn't work, you can touch "Viewer Location" and set it
+              manually, if you know your approximate latitude and
+              longitude.  You must enter at least an approximate
+              location to see the sky as it is where you are.
+            </li>
+            <li>
+              If your phone supports device orientation control, the view
+              will show the part of the sky above where the end of your phone
+              is pointing at, <i>if</i> the Planetarium knows which way
+              north is.
+              <ul>
+                <li>
+                  If your phone has a compass, the Planetarium will
+                  automatically find the direction it is pointing
+                  when the Planetarium opens.  You may want to re-set it
+                  from time to time.  Stand away from magnetic fields
+                  (such as monitors and TVs) and magnetic metal when
+                  using the compass.
+                </li>
+                <li>
+                  If your phone doesn't have a compass (e.g. if it is an
+                  iPod touch), point the end of your phone north
+                  (e.g. toward the north star) and press "Point device
+                  north &hellip;".
+                </li>
+              </ul>
+            </li>
+            <li>
+              "Toggle Full Screen".  On Android, this will get rid of the
+              address bar at the top, or else get it back when you want to
+              leave the page or reload.
+            </li>
+          </ol>
+          The other items on the menu are the ones available on the desktop.  It is
+          best to try them out there.
+
+          <h3>Labeling Stars</h3>
+          The Planetarium can show three levels of star labels.
+          Touch the screen to change levels.
+          <ol>
+            <li>
+              Level 0: no labels.
+            </li>
+            <li>
+              Level 1 (on when the Planetarium opens): Names of well-known
+              stars, letters for fairly bright stars.  You should be able to
+              make out the shapes of constellations.
+            </li>
+            <li>
+              Level 2: Designators for all stars, but you may need to
+              zoom in before all designators appear.  No planet names.
+            </li>
+          </ol>
+      </div>
+    </div>
+
+    <br>
+    &Delta;&Omicron;&Gamma;&Omicron;&Upsilon;&Lambda;&Eta;&Sigma;
+    
+    <footer class="footer">
+      <div>
+        <img src="images/dogtooth-55-50.png">
+      </div>
+      <div>
+        <script>
+          var a = 'd';
+          var h = 'z';
+          var d = 'u';
+          var t3 = '6';
+          var c = 'g';
+          var f = 'e';
+          var t4 = '4';
+          var b = 'o';
+          var e = 'l';
+          var t1 = '&';
+          var g = 'e';
+          var m = "gmail";
+          var n = "com";
+          var t2 = '#';
+          document.write(a + b + c + d + e + f + g + h + t1 + t2 + t3 +t4
+          + m + '.' + n + '<br/>');
+        </script>
+      </div>
+    </footer>
+    <script type="text/javascript">
+        document.addEventListener( "contextmenu", function (e) {
+            e.preventDefault();
+        });
+        window.onload = function () {
+
+            var isMobile =
+                navigator.userAgent.indexOf( 'Mobile' ) >= 0 ||
+                navigator.userAgent.indexOf( 'Android' ) >= 0;
+            if ( isMobile ) {
+
+                document.body.style[ 'font-size' ] = '28px';
+                document.getElementById( 'mobile' ).style.display = "block";
+
+            } else {
+
+                document.getElementById( 'desktop' ).style.display = "block";
+
+            }
+
+		};
+
+    </script>
+  </body>
+</html>

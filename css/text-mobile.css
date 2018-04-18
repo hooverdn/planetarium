@@ -1,0 +1,43 @@
+
+body {
+    //margin: 20px 100px;
+    font: 36px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.header {
+    margin: 0px 4em;
+}
+
+.topleft {
+    float: left;
+    text-align: left;
+}
+
+.topcenter {
+    overflow: hidden;
+    text-align: center;
+}
+
+.topright {
+    float: right;
+    text-align: right;
+}
+
+.footer {
+    margin: 4em;
+    text-align: center;
+    color:#557;
+    font-size: .7em;
+}
+
+a {
+    font: 28px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+h2 {
+    margin-top: 3ex;
+}
+
+h3 {
+    margin-top: 3ex;
+}

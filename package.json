@@ -1,0 +1,54 @@
+{
+  "name": "plantarium",
+  "version": "0.00.001",
+  "description": "A star and planet map implemented using three.js.",
+  "main": "js/planetarium.min.js",
+  "jsnext:main": "js/planetarium-module.js",
+  "eslintConfig": {
+    "extends": "mdcs"
+  },
+  "scripts": {
+    "main": "rollup -c",
+    "build-uglify": "rollup -c && mv js/planetarium.min.js js/planetarium.umd.js && cp LICENSE js/planetarium.min.js && uglifyjs js/planetarium.umd.js -cm >> js/planetarium.min.js",
+    "build-closure": "rollup -c && mv js/planetarium.min.js js/planetarium.umd.js && java -jar node_modules/google-closure-compiler/compiler.jar --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --externs build-utils/externs.js --language_in=ECMASCRIPT5_STRICT --js js/planetarium.umd.js --js_output_file js/planetarium.min.js",
+    "watch": "rollup -c --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "planetlib": "rollup -c rollup.config.lib.js",
+    "planetlib2": "rollup -c rollup.config.lib2.js",
+    "lint": "eslint src",
+    "build-constellations": "npm run planetlib && node scripts/prepare_constellations.js src/js/constellations.js && eslint --fix src/js/constellations.js && npm run planetlib2 && node scripts/prepare_constellations2.js src/js/constellations.js && eslint --fix src/js/constellations.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/hooverdn/planetarium.git"
+  },
+  "keywords": [
+    "three.js",
+    "planetarium",
+    "starmap"
+  ],
+  "author": "Doug Hoover <doguleez@gmail.com> (@dawguleez)",
+  "license": "ISC",
+  "homepage": "https://github.com/hooverdn/planetarium#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint-config-mdcs": "^4.2.2",
+    "google-closure-compiler": "^20180402.0.0",
+    "jsdoc": "^3.5.5",
+    "npm-run-all": "^4.1.2",
+    "rollup": "^0.51.5",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-cleanup": "^2.0.0",
+    "rollup-plugin-eslint": "^4.0.0",
+    "rollup-plugin-uglify": "^2.0.1",
+    "rollup-watch": "^4.3.1"
+  },
+  "dependencies": {
+    "canvas": "^1.6.9",
+    "marked": "^0.3.6",
+    "numericjs": "^1.2.6",
+    "quadprog": "^1.5.1"
+  }
+}

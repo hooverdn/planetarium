@@ -1,0 +1,503 @@
+<!--
+(MIT License)
+Copyright 2017  Douglas N. Hoover
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<html>	
+<head>
+  <title>Planetarium</title>
+
+  <link rel="stylesheet" href="css/controlstyle.css">
+
+  <!--<script src="http://10.0.0.5:8888/target/target-script-min.js"></script>-->
+
+  <script type="text/javascript">
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        var left = ev.target.style.left;
+        var top = ev.target.style.top;
+        // units have to be px
+        left = left ? left.substr(0, left.length - 2) : 0;
+        top = top ? top.substr(0, top.length - 2) : 0;
+        var dispX = ev.clientX - left;
+        var dispY = ev.clientY - top;
+        ev.dataTransfer.setData("text", ev.target.id + ',' + dispX + ',' + dispY);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var text = ev.dataTransfer.getData("text");
+        if (text) {
+            // control panel being dropped
+            var vals = text.split(',');
+            // are "units" always 2 chars?
+            //var data = ev.dataTransfer.getData("text");
+            var dragged = document.getElementById(vals[0]);
+            dragged.style.left = (ev.clientX - vals[1]) + 'px';
+            dragged.style.top = (ev.clientY - vals[2]) + 'px';
+        }
+    }
+
+    // If we are on this page, these should all be false.
+    var isMobile = navigator.userAgent.indexOf( 'Mobile' ) >= 0;
+    var isAndroid = navigator.userAgent.indexOf( 'Android' ) >= 0;
+    var isApple = navigator.userAgent.indexOf( 'Mac OS X' ) >= 0;
+
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/91/three.min.js"></script>
+  <!--<script src="js/three.js/three.min.js"></script>-->
+  <script src="js/three.js/Detector.js"></script>
+  <script src="js/numericjs/numeric.js"></script>
+  <script src="js/planetarium.min.js"></script>
+  <script>
+	var SC = DOGULEAN.SettingsControl;
+
+    // Disable mouse events because touch events generate them,
+    // and we don't want duplicates.  This is a very rough test.
+    DOGULEAN.disableMouseEvents = isMobile || isAndroid;
+    DOGULEAN.disablePPointerEvents = false;
+
+  </script>
+  
+  <style>
+    body {
+      /* set margin to 0 and overflow to hidden, to go fullscreen */
+      margin: 0;
+      overflow: hidden;
+      font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+    }
+    div#msg {
+      position: absolute;
+      z-index: 995;
+      opacity: 0;
+      transition:opacity 0.5s ease-out;
+      color: silver;
+      background: midnightblue;
+      border: 1px solid purple;
+      padding: 2px 4px 2px 4px;
+      pointer-events:none;
+    }
+    span.explan {
+      font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+      padding: 0px 0px 0px 0px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Div which will hold the Output -->
+  <div id="WebGL-output" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div id="msg"></div>
+  </div>
+
+  <div id="controls" class="controls" draggable="true" ondragstart="drag(event)">
+    <span class="heading">Controls</span>
+    <div draggable="true" ondragstart="event.preventDefault()">
+      <span id="home-planet">Planet&nbsp;&nbsp;
+        <select id="planet" onchange="SC.updateValue('location', 'planet')">
+          <option value="sun" id="sun-hp">Sun
+          <option value="mercury" id="mercury-hp">Mercury
+          <option value="venus" id="venus-hp">Venus
+          <option value="earth" id="earth-hp">Earth
+          <option value="moon" id="moon-hp">Moon
+          <option value="mars" id="mars-hp">Mars
+          <option value="jupiter" id="jupiter-hp">Jupiter
+          <option value="saturn" id="saturn-hp">Saturn
+          <option value="uranus" id="uranus-hp">Uranus
+          <option value="neptune" id="neptune-hp">Neptune
+        </select>
+        </span>
+      <span class="accordion">Viewer Location</span>
+      <div id="location" class="control">
+        <table class="nonoption">
+          <tr>
+            <td>
+              Latitude
+            </td>
+            <!-- We are duplicating onchange with oninput because IE (11)
+                 does not support the latter, at least for sliders, but
+                 onchange works as expected for oninput.
+              -->
+            <td>
+              <input type="range" id="latitude-range" min="-90" max="90" step=".1"
+                     oninput="SC.updateNumber('location', 'latitude', 'range', 'number')"
+                     onchange="SC.updateNumber('location', 'latitude', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="latitude-number" min="-90" max="90" step=".1"
+                     oninput="SC.updateNumber('location', 'latitude', 'number', 'range')"
+                     onchange="SC.updateNumber('location', 'latitude', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Longitude
+            </td>
+            <td>
+              <input type="range" id="longitude-range" min="-180" max="180" step=".1"
+                     oninput="SC.updateNumber('location', 'longitude', 'range', 'number')"
+                     onchange="SC.updateNumber('location', 'longitude', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="longitude-number" min="-180" max="180" step=".1"
+                     oninput="SC.updateNumber('location', 'longitude', 'number', 'range')"
+                     onchange="SC.updateNumber('location', 'longitude', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Altitude
+            </td>
+            <td>
+              <input type="range" id="altitude-range" min="1" max="10" step=".1"
+                     oninput="SC.updateNumber('location', 'altitude', 'range', 'number')"
+                     onchange="SC.updateNumber('location', 'altitude', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="altitude-number" min="1" max="10" step=".1"
+                     oninput="SC.updateNumber('location', 'altitude', 'number', 'range')"
+                     onchange="SC.updateNumber('location', 'altitude', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+        </table>
+        <span class="option" onclick="SC.geolocate()" id="geolocate">Set From Geolocation</span>
+      </div>
+    
+      <span class="accordion">View</span>
+      <div id="view" class="control">
+        <table class="nonoption">
+          <tr>
+            <td>
+              Elevation
+            </td>
+            <td>
+              <input type="range" id="elevation-range" min="-89" max="89" step=".1"
+                     oninput="SC.updateNumber('view', 'elevation', 'range', 'number')"
+                     onchange="SC.updateNumber('view', 'elevation', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="elevation-number" min="-89" max="89" step=".1"
+                     oninput="SC.updateNumber('view', 'elevation', 'number', 'range')"
+                     onchange="SC.updateNumber('view', 'elevation', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Rotation
+            </td>
+            <td>
+              <input type="range" id="rotation-range" min="-180" max="180" step=".1"
+                     oninput="SC.updateNumber('view', 'rotation', 'range', 'number')"
+                     onchange="SC.updateNumber('view', 'rotation', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="rotation-number" min="-180" max="180" step=".1"
+                     oninput="SC.updateNumber('view', 'rotation', 'number', 'range')"
+                     onchange="SC.updateNumber('view', 'rotation', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Zoom
+            </td>
+            <td>
+              <input type="range" id="zoom-range" min="0.5" max="50" step=".1"
+                     oninput="SC.updateNumber('view', 'zoom', 'range', 'number')"
+                     onchange="SC.updateNumber('view', 'zoom', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="zoom-number" min="0.5" max="50" step=".1"
+                     oninput="SC.updateNumber('view', 'zoom', 'number', 'range')"
+                     onchange="SC.updateNumber('view', 'zoom', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Lines
+            </td>
+            <td>
+              <select id="lines" onclick="SC.updateBoolean('view', 'lines')"><option value="true">ON <option value="false">OFF</select>
+            </td>
+          </tr>
+        </table>
+        <span class="option" onclick="SC.restoreViewDefaults()">Restore View Defaults</span>
+      </div>
+    
+      <span class="accordion">Time</span>
+      <div id="time" class="control">
+        <span id="current-time">Time Currently Set (UTC/GMT)</span>
+        <div class="nonoption">
+        <table class="timetable">
+          <tr>
+            <td> <input type="button" class="option" onclick="SC.changeTime({years: 1})" value="+"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({months: 1})" value="+"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({days: 1})" value="+"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({hours: 1})" value="+"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({minutes: 1})" value="+"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({seconds: 1})" value="+"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({millis: 1})" value="+"></td>
+          </tr>
+          <tr>
+            <td id="datetime-year"></td>
+            <td>&ndash;</td>
+            <td id="datetime-month"></td>
+            <td>&ndash;</td>
+            <td id="datetime-date"></td>
+            <td>&nbsp;</td>
+            <td id="datetime-hours"></td>
+            <td>:</td>
+            <td id="datetime-minutes"></td>
+            <td>:</td>
+            <td id="datetime-seconds"></td>
+            <td>.</td>
+            <td id="datetime-millis"></td>
+            
+          </tr>
+          <tr>
+            <td> <input type="button" class="option" onclick="SC.changeTime({years: -1})" value="&ndash;"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({months: -1})" value="&ndash;"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({days: -1})" value="&ndash;"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({hours: -1})" value="&ndash;"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({minutes: -1})" value="&ndash;"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({seconds: -1})" value="&ndash;"></td>
+            <td></td>
+            <td> <input type="button" class="option" onclick="SC.changeTime({millis: -1})" value="&ndash;"></td>
+          </tr>
+        </table>
+        </div>
+        <span class="option" id="real-time" onclick="realTime()">Use Real Time</span>
+
+        <table class="nonoption" style="width: 100%;">
+          <tr>
+            <td style="width:5em;">
+              Time Rate
+            </td>
+            <td>
+              <input type="number" class="d4" id="time-rate" min="-60" max="60" step=".1"
+                     onchange="SC.updateTimeRate('time', 'time-rate')"
+                     >
+            </td>
+            <td>
+              <input type="button" class="option"  style="align:right;" id="rate-1"
+                     onclick="SC.updateTimeRate('time', 1)"
+                     value="Set Rate To 1">
+            </td>
+          </tr>
+          <tr>
+            <td id="clock-state" colspan="2">
+              Clock is Started
+            </td>
+            <td>
+              <input type="button" class="option" id="toggle-clock"
+                     onclick="toggleTimeStopped()"
+                     value="Stop Clock">
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <span class="accordion">Stars</span>
+      <div id="stars" class="control">
+        <table class="nonoption">
+          <tr>
+            <td>
+              Base Radius
+            </td>
+            <td>
+              <input type="range" id="starradius-range" min="0.2" max="5" step=".1"
+                     oninput="SC.updateNumber('stars', 'starradius', 'range', 'number')"
+                     onchange="SC.updateNumber('stars', 'starradius', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="starradius-number" min="0.2" max="5" step=".1"
+                     oninput="SC.updateNumber('stars', 'starradius', 'number', 'range')"
+                     onchange="SC.updateNumber('stars', 'starradius', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Brightness Boost
+            </td>
+            <td>
+              <input type="range" id="starbrightness-range" min="1.0" max="50" step=".1"
+                     oninput="SC.updateNumber('stars', 'starbrightness', 'range', 'number')"
+                     onchange="SC.updateNumber('stars', 'starbrightness', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="starbrightness-number" min="1.0" max="50" step=".1"
+                     oninput="SC.updateNumber('stars', 'starbrightness', 'number', 'range')"
+                     onchange="SC.updateNumber('stars', 'starbrightness', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Color Level
+            </td>
+            <td>
+              <input type="range" id="colorlevel-range" min="0" max="10" step=".1"
+                     oninput="SC.updateNumber('stars', 'colorlevel', 'range', 'number')"
+                     onchange="SC.updateNumber('stars', 'colorlevel', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="colorlevel-number" min="0" max="10" step=".1"
+                     oninput="SC.updateNumber('stars', 'colorlevel', 'number', 'range')"
+                     onchange="SC.updateNumber('stars', 'colorlevel', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+        </table>
+        <span class="option" onclick="SC.restoreStarDefaults()">Restore Star Defaults</span>
+      </div>
+      
+      <span class="accordion">Planets</span>
+      <div id="planets" class="control">
+        <table class="nonoption">
+          <tr>
+            <td>
+              Planet Magnification
+            </td>
+            <td>
+              <input type="range" id="planetmag-range" min="1" max="200" step=".1"
+                     oninput="SC.updateNumber('planets', 'planetmag', 'range', 'number')"
+                     onchange="SC.updateNumber('planets', 'planetmag', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="planetmag-number" min="1" max="200" step=".1"
+                     oninput="SC.updateNumber('planets', 'planetmag', 'number', 'range')"
+                     onchange="SC.updateNumber('planets', 'planetmag', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Planet Color
+            </td>
+            <td>
+              <select id="planetcolor" onchange="SC.updateValue('planets', 'planetcolor')">
+                <option value="green">Green
+                <option value="blue">Blue
+                <option value="white">White
+                <option value="natural">Natural
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td id="sun_mag">
+              Sun/Moon Magnification
+            </td>
+            <td>
+              <input type="range" id="sunmoonmag-range" min="1" max="10" step=".1"
+                     oninput="SC.updateNumber('planets', 'sunmoonmag', 'range', 'number')"
+                     onchange="SC.updateNumber('planets', 'sunmoonmag', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="sunmoonmag-number" min="1" max="10" step=".1"
+                     oninput="SC.updateNumber('planets', 'sunmoonmag', 'number', 'range')"
+                     onchange="SC.updateNumber('planets', 'sunmoonmag', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Sun Brightness
+            </td>
+            <td>
+              <input type="range" id="sunbrightness-range" min="0.5" max="10" step=".1"
+                     oninput="SC.updateNumber('planets', 'sunbrightness', 'range', 'number')"
+                     onchange="SC.updateNumber('planets', 'sunbrightness', 'range', 'number')"
+                     >
+            </td>
+            <td>
+              <input type="number" class="d4" id="sunbrightness-number" min="1" max="10" step=".1"
+                     oninput="SC.updateNumber('planets', 'sunbrightness', 'number', 'range')"
+                     onchange="SC.updateNumber('planets', 'sunbrightness', 'number', 'range')"
+                     >
+            </td>
+          </tr>
+        </table>
+		<span class="option" onclick="SC.restorePlanetDefaults()">Restore Planet Defaults</span>
+      </div>
+
+      <span class="option accordion">Planet Positions</span>
+      <div id="planet-location" class="control">
+        <span class="nonoption" id="sun-location"></span>
+        <span class="nonoption" id="mercury-location"></span>
+        <span class="nonoption" id="venus-location"></span>
+        <span class="nonoption" id="earth-location"></span>
+        <span class="nonoption" id="moon-location"></span>
+        <span class="nonoption" id="mars-location"></span>
+        <span class="nonoption" id="jupiter-location"></span>
+        <span class="nonoption" id="saturn-location"></span>
+        <span class="nonoption" id="uranus-location"></span>
+        <span class="nonoption" id="neptune-location"></span>
+      </div>
+      
+      <span class="option" onclick="SC.restoreAllDefaults()">Restore All Defaults</span>
+      <span class="option" onclick="DOGULEAN.dismissContextMenu()">Dismiss</span>
+    </div>
+  </div>
+  <script>
+	window.onload = function () {
+
+		DOGULEAN.init( window, isMobile, isApple );
+
+	}
+  </script>
+</body>
+</html>
